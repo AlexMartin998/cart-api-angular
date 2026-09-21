@@ -1,4 +1,4 @@
-<dl class="mt-6 ml-auto w-full max-w-xs space-y-1 text-sm">
+<dl class="mt-6 ml-auto w-full max-w-xs space-y-1.5 text-sm">
   <div class="flex justify-between">
     <dt class="text-muted">Subtotal</dt>
     <dd class="amount">{{ subtotal() | currency: 'USD' }}</dd>
@@ -9,8 +9,8 @@
       <dd class="amount">−{{ discount() | currency: 'USD' }}</dd>
     </div>
   }
-  <div class="flex justify-between border-t border-line pt-1 text-base font-semibold">
+  <div class="mt-1 flex justify-between border-t-2 border-ink pt-2 text-base font-semibold">
     <dt>Total</dt>
-    <dd class="price text-lg">{{ total() | currency: 'USD' }}</dd>
+    <dd class="amount text-lg">{{ total() | currency: 'USD' }}</dd>
   </div>
 </dl>

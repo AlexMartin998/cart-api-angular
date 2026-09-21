@@ -35,7 +35,6 @@ const PAGE = {
   totalPages: 1,
 };
 
-
 function render(): ComponentFixture<ProductList> {
   TestBed.configureTestingModule({
     providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
@@ -83,7 +82,7 @@ describe('ProductList', () => {
 
     expect(element.querySelectorAll('li')).toHaveLength(2);
     expect(element.textContent).toContain('Auriculares inalámbricos');
-    expect(element.textContent).toContain('25 disponibles');
+    expect(element.textContent).toContain('25 en stock');
   });
 
   it('marks a product without stock as sold out', async () => {

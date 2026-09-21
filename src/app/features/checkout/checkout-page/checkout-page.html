@@ -3,17 +3,21 @@
 @if (store.isEmpty()) {
   <p class="mt-6 text-muted">
     Tu carrito está vacío.
-    <a routerLink="/productos" class="rounded-sm text-brand underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand">Ver el catálogo</a>
+    <a
+      routerLink="/productos"
+      class="rounded-sm text-accent underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+      >Ver el catálogo</a
+    >
   </p>
 } @else {
   <p class="mt-2 text-sm text-muted">Revisa lo que vas a comprar antes de confirmar.</p>
 
-  <ul class="mt-6 divide-y divide-line rounded-(--radius-card) border border-line bg-surface">
+  <ul class="mt-8 border-t border-line">
     @for (line of store.cart().items; track line.productId) {
-      <li class="flex flex-wrap items-center gap-x-4 gap-y-1 p-4">
+      <li class="flex flex-wrap items-center gap-x-6 gap-y-1 border-b border-line py-4">
         <div class="min-w-0 flex-1">
-          <p class="font-medium">{{ line.name ?? 'Producto retirado' }}</p>
-          <p class="text-xs text-muted">{{ line.code }}</p>
+          <p class="font-semibold">{{ line.name ?? 'Producto retirado' }}</p>
+          <p class="amount mt-1 text-sm text-muted">{{ line.code }}</p>
           @if (line.status !== 'ok') {
             <p class="text-sm font-medium text-danger">No se cobrará: ya no se puede vender.</p>
           }
@@ -21,7 +25,7 @@
         <p class="amount text-sm text-muted">
           {{ line.quantity }} × {{ line.unitPrice | currency: 'USD' }}
         </p>
-        <p class="amount w-24 text-right font-medium">{{ line.lineTotal | currency: 'USD' }}</p>
+        <p class="amount w-24 text-right font-semibold">{{ line.lineTotal | currency: 'USD' }}</p>
       </li>
     }
   </ul>
@@ -39,7 +43,7 @@
   <div class="mt-6 flex flex-wrap justify-end gap-3">
     <a
       routerLink="/carrito"
-      class="inline-flex min-h-11 items-center rounded-(--radius-card) border border-control px-4 text-sm font-medium transition-colors duration-200 hover:bg-brand/5 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
+      class="inline-flex min-h-11 items-center rounded-(--radius-card) border border-control px-4 text-sm font-medium transition-colors duration-200 hover:border-ink hover:bg-ink/5 outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
     >
       Volver al carrito
     </a>
@@ -47,7 +51,7 @@
       type="button"
       [disabled]="placing() || !store.canCheckout()"
       (click)="confirm()"
-      class="min-h-11 cursor-pointer rounded-(--radius-card) bg-brand px-4 font-medium text-white transition-colors duration-200 hover:bg-brand-strong outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-40"
+      class="min-h-11 cursor-pointer rounded-(--radius-card) bg-brand px-4 font-medium text-white transition-colors duration-200 hover:bg-brand-strong outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40"
     >
       {{ placing() ? 'Confirmando…' : 'Confirmar compra' }}
     </button>

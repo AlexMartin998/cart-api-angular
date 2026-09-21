@@ -5,18 +5,15 @@
   class="flex max-h-(--dialog-max-height) flex-col text-left"
 >
   <header class="flex items-start gap-3 border-b border-line px-6 py-5">
-    <div class="mr-auto min-w-0">
-      <p class="text-label text-muted uppercase">Catálogo</p>
-      <h2 id="product-form-title" class="mt-1.5 truncate font-display text-xl font-semibold">
-        {{ isNew() ? 'Nuevo producto' : editing()!.name }}
-      </h2>
-    </div>
+    <h2 id="product-form-title" class="mr-auto min-w-0 truncate text-lg font-semibold">
+      {{ isNew() ? 'Nuevo producto' : editing()!.name }}
+    </h2>
 
     <button
       type="button"
       (click)="cancel.emit()"
       aria-label="Cerrar"
-      class="-mt-1 -mr-2 inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-(--radius-card) text-muted outline-offset-2 transition-colors duration-200 hover:bg-brand/5 hover:text-ink focus-visible:outline-2 focus-visible:outline-brand"
+      class="-mr-2 inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-(--radius-card) text-muted outline-offset-2 transition-colors duration-200 hover:bg-ink/5 hover:text-ink focus-visible:outline-2 focus-visible:outline-accent"
     >
       <svg
         viewBox="0 0 20 20"
@@ -44,7 +41,7 @@
           placeholder="SKU-016"
           [attr.aria-invalid]="invalid('code') || null"
           [attr.aria-describedby]="invalid('code') ? 'code-error' : null"
-          class="min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-brand disabled:border-line disabled:bg-canvas disabled:text-muted"
+          class="min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-accent disabled:border-line disabled:bg-canvas disabled:text-muted"
         />
         @if (invalid('code')) {
           <p id="code-error" class="text-sm text-danger">
@@ -65,7 +62,7 @@
           placeholder="Mochila de senderismo"
           [attr.aria-invalid]="invalid('name') || null"
           [attr.aria-describedby]="invalid('name') ? 'name-error' : null"
-          class="min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-brand"
+          class="min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-accent"
         />
         @if (invalid('name')) {
           <p id="name-error" class="text-sm text-danger">
@@ -84,7 +81,7 @@
           maxlength="500"
           rows="3"
           placeholder="Cómo se lo describirías a quien lo va a comprar."
-          class="w-full resize-y rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-brand"
+          class="w-full resize-y rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-accent"
         ></textarea>
       </div>
 
@@ -107,7 +104,7 @@
             placeholder="0.00"
             [attr.aria-invalid]="invalid('price') || null"
             [attr.aria-describedby]="invalid('price') ? 'price-error' : null"
-            class="amount min-h-11 w-full rounded-(--radius-card) border border-control bg-surface py-2 pr-3 pl-7 outline-offset-2 transition-colors duration-200 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-brand"
+            class="amount min-h-11 w-full rounded-(--radius-card) border border-control bg-surface py-2 pr-3 pl-7 outline-offset-2 transition-colors duration-200 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-accent"
           />
         </div>
         @if (invalid('price')) {
@@ -125,7 +122,7 @@
           formControlName="stock"
           [attr.aria-invalid]="invalid('stock') || null"
           [attr.aria-describedby]="invalid('stock') ? 'stock-error' : null"
-          class="amount min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand"
+          class="amount min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-accent"
         />
         @if (invalid('stock')) {
           <p id="stock-error" class="text-sm text-danger">El stock no puede ser negativo.</p>
@@ -139,7 +136,7 @@
           formControlName="categoryId"
           [attr.aria-invalid]="invalid('categoryId') || null"
           [attr.aria-describedby]="invalid('categoryId') ? 'categoryId-error' : null"
-          class="min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-brand"
+          class="min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-accent"
         >
           <option [value]="0" disabled>Elige una categoría</option>
           @for (category of categories(); track category.id) {
@@ -166,14 +163,14 @@
     <button
       type="button"
       (click)="cancel.emit()"
-      class="inline-flex min-h-11 cursor-pointer items-center rounded-(--radius-card) border border-control px-4 text-sm font-medium outline-offset-2 transition-colors duration-200 hover:bg-brand/5 focus-visible:outline-2 focus-visible:outline-brand"
+      class="inline-flex min-h-11 cursor-pointer items-center rounded-(--radius-card) border border-control px-4 text-sm font-medium outline-offset-2 transition-colors duration-200 hover:bg-ink/5 focus-visible:outline-2 focus-visible:outline-accent"
     >
       Cancelar
     </button>
     <button
       type="submit"
       [disabled]="saving()"
-      class="inline-flex min-h-11 cursor-pointer items-center rounded-(--radius-card) bg-brand px-5 text-sm font-medium text-white outline-offset-2 transition-colors duration-200 hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-60"
+      class="inline-flex min-h-11 cursor-pointer items-center rounded-(--radius-card) bg-brand px-5 text-sm font-medium text-white outline-offset-2 transition-colors duration-200 hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60"
     >
       {{ saving() ? 'Guardando…' : 'Guardar' }}
     </button>

@@ -6,7 +6,6 @@ import { errorMessage } from '../../../core/http/error-messages';
 import { Product, ProductInput } from '../../../core/models/catalog';
 import { Pager } from '../../../shared/ui/pager/pager';
 import { StatePanel } from '../../../shared/ui/state-panel/state-panel';
-import { categoryTone } from '../../products/catalog-visuals';
 import { AdminProductsService } from '../admin-products.service';
 import { ProductForm } from '../ui/product-form/product-form';
 
@@ -33,8 +32,6 @@ export default class AdminProductsPage {
   protected readonly saving = signal(false);
   protected readonly failure = signal<string | null>(null);
   protected readonly notice = signal<string | null>(null);
-
-  protected readonly tone = categoryTone;
 
   constructor() {
     effect(() => {

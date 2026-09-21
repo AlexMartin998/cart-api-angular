@@ -7,9 +7,8 @@ import { CartLine as Line } from '../../../../core/models/cart';
   imports: [CurrencyPipe],
   templateUrl: './cart-line.html',
   host: {
-    class: 'flex flex-wrap items-center gap-x-4 gap-y-2 rounded-(--radius-card) border p-4',
+    class: 'flex flex-wrap items-center gap-x-6 gap-y-3 border-b py-4',
     '[class.border-line]': "line().status === 'ok'",
-    '[class.bg-surface]': "line().status === 'ok'",
     '[class.border-danger]': "line().status !== 'ok'",
   },
 })

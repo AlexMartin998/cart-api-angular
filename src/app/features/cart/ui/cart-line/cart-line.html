@@ -1,6 +1,6 @@
-<div class="min-w-0 flex-1">
-  <p class="font-medium">{{ line().name ?? 'Producto retirado' }}</p>
-  <p class="text-xs text-muted">{{ line().code }}</p>
+<div class="min-w-0 flex-1 basis-48">
+  <p class="font-semibold">{{ line().name ?? 'Producto retirado' }}</p>
+  <p class="amount mt-1 text-sm text-muted">{{ line().code }}</p>
 
   @switch (line().status) {
     @case ('insufficient_stock') {
@@ -16,36 +16,42 @@
   }
 </div>
 
-<div class="flex items-center gap-1">
+<div class="flex items-center">
   <button
     type="button"
     [disabled]="busy()"
     (click)="quantityChange.emit(line().quantity - 1)"
     [attr.aria-label]="'Quitar una unidad de ' + line().name"
-    class="size-11 cursor-pointer rounded-(--radius-card) border border-control text-lg leading-none outline-offset-2 transition-colors duration-200 hover:bg-brand/5 focus-visible:outline-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-40"
+    class="size-11 cursor-pointer rounded-l-(--radius-card) border border-control text-lg leading-none outline-offset-2 transition-colors duration-200 hover:bg-ink hover:text-white focus-visible:outline-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink"
   >
     −
   </button>
-  <span class="amount w-10 text-center text-sm font-medium" aria-live="polite">{{ line().quantity }}</span>
+  <span
+    class="amount grid h-11 w-12 place-items-center border-y border-control text-sm font-medium"
+    aria-live="polite"
+    >{{ line().quantity }}</span
+  >
   <button
     type="button"
     [disabled]="busy()"
     (click)="quantityChange.emit(line().quantity + 1)"
     [attr.aria-label]="'Añadir una unidad de ' + line().name"
-    class="size-11 cursor-pointer rounded-(--radius-card) border border-control text-lg leading-none outline-offset-2 transition-colors duration-200 hover:bg-brand/5 focus-visible:outline-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-40"
+    class="size-11 cursor-pointer rounded-r-(--radius-card) border border-control text-lg leading-none outline-offset-2 transition-colors duration-200 hover:bg-ink hover:text-white focus-visible:outline-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink"
   >
     +
   </button>
 </div>
 
 <p class="amount w-20 text-right text-sm text-muted">{{ line().unitPrice | currency: 'USD' }}</p>
-<p class="price w-24 text-right text-lg font-semibold">{{ line().lineTotal | currency: 'USD' }}</p>
+<p class="amount w-24 text-right text-lg font-semibold">
+  {{ line().lineTotal | currency: 'USD' }}
+</p>
 
 <button
   type="button"
   [disabled]="busy()"
   (click)="removed.emit()"
-  class="min-h-11 cursor-pointer rounded-sm px-1 text-sm text-muted underline underline-offset-2 outline-offset-2 transition-colors duration-200 hover:text-danger focus-visible:outline-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-40"
+  class="min-h-11 cursor-pointer rounded-sm px-1 text-sm text-muted underline outline-offset-2 transition-colors duration-200 hover:text-danger focus-visible:outline-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40"
 >
   Eliminar
 </button>

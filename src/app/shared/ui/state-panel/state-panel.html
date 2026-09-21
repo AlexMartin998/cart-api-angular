@@ -1,15 +1,18 @@
 <div
-  class="mt-6 flex flex-col items-start gap-3 rounded-(--radius-card) border border-dashed p-6"
+  class="mt-8 flex flex-col items-start gap-3 border-l-2 py-2 pl-4"
   [class.border-line]="tone() !== 'error'"
   [class.border-danger]="tone() === 'error'"
   [attr.role]="tone() === 'error' ? 'alert' : null"
   [attr.aria-busy]="tone() === 'loading'"
 >
-  <p class="flex items-center gap-2 text-sm" [class.text-danger]="tone() === 'error'"
-     [class.text-muted]="tone() !== 'error'">
+  <p
+    class="flex items-center gap-2 text-sm"
+    [class.text-danger]="tone() === 'error'"
+    [class.text-muted]="tone() !== 'error'"
+  >
     @if (tone() === 'loading') {
       <span
-        class="size-4 animate-spin rounded-full border-2 border-line border-t-brand"
+        class="size-4 animate-spin rounded-full border-2 border-line border-t-ink"
         aria-hidden="true"
       ></span>
     }
@@ -20,7 +23,7 @@
     <button
       type="button"
       (click)="retry.emit()"
-      class="rounded-(--radius-card) border border-line px-3 py-1.5 text-sm font-medium hover:bg-brand/5"
+      class="rounded-(--radius-card) border border-control px-3 py-1.5 text-sm font-medium transition-colors duration-200 hover:border-ink hover:bg-ink/5"
     >
       {{ label }}
     </button>

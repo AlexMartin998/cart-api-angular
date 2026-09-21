@@ -12,7 +12,7 @@
 } @else if (store.isEmpty()) {
   <app-state-panel tone="empty" message="Tu carrito está vacío. Añade algo desde el catálogo." />
 } @else {
-  <ul class="mt-6 space-y-3">
+  <ul class="mt-8 border-t border-line">
     @for (line of store.cart().items; track line.productId) {
       <li
         appCartLine
@@ -25,11 +25,11 @@
     }
   </ul>
 
-  <div class="mt-4 flex justify-end">
+  <div class="mt-3 flex justify-end">
     <button
       type="button"
       (click)="store.clear()"
-      class="inline-flex min-h-11 cursor-pointer items-center rounded-sm px-1 text-sm text-muted underline underline-offset-2 transition-colors duration-200 hover:text-danger outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
+      class="inline-flex min-h-11 cursor-pointer items-center rounded-sm px-1 text-sm text-muted underline underline-offset-2 transition-colors duration-200 hover:text-danger outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
     >
       Vaciar carrito
     </button>
@@ -50,7 +50,7 @@
   <div class="mt-6 flex justify-end">
     <a
       routerLink="/checkout"
-      class="inline-flex min-h-11 cursor-pointer items-center rounded-(--radius-card) bg-brand px-4 font-medium text-white transition-colors duration-200 hover:bg-brand-strong outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
+      class="inline-flex min-h-11 cursor-pointer items-center rounded-(--radius-card) bg-brand px-4 font-medium text-white transition-colors duration-200 hover:bg-brand-strong outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
       [class.pointer-events-none]="!store.canCheckout()"
       [class.opacity-40]="!store.canCheckout()"
       [attr.aria-disabled]="!store.canCheckout()"

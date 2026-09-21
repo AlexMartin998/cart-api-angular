@@ -4,14 +4,14 @@
   <button
     type="button"
     (click)="startNew()"
-    class="min-h-11 cursor-pointer rounded-(--radius-card) bg-brand px-4 font-medium text-white outline-offset-2 transition-colors duration-200 hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-brand"
+    class="min-h-11 cursor-pointer rounded-(--radius-card) bg-brand px-4 font-medium text-white outline-offset-2 transition-colors duration-200 hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-accent"
   >
     Nuevo producto
   </button>
 </div>
 
 @if (notice(); as message) {
-  <p role="status" class="mt-4 rounded-(--radius-card) bg-brand/10 px-4 py-3 text-sm">
+  <p role="status" class="mt-6 border-l-2 border-ink py-2 pl-4 text-sm">
     {{ message }}
   </p>
 }
@@ -46,56 +46,51 @@
     (retry)="products.reload()"
   />
 } @else if (products.hasValue()) {
-  <div class="mt-6 overflow-x-auto rounded-(--radius-card) border border-line bg-surface">
-    <table class="w-full text-sm">
+  <div class="mt-8 overflow-x-auto">
+    <table class="w-full border-t border-line text-sm">
       <caption class="sr-only">
         Productos del catálogo, con su precio y existencias
       </caption>
-      <thead class="border-b border-line text-left">
+      <thead class="border-b border-line text-left text-label text-muted uppercase">
         <tr>
-          <th scope="col" class="px-4 py-3 font-semibold">Producto</th>
-          <th scope="col" class="px-4 py-3 font-semibold">Categoría</th>
-          <th scope="col" class="px-4 py-3 text-right font-semibold">Precio</th>
-          <th scope="col" class="px-4 py-3 text-right font-semibold">Stock</th>
-          <th scope="col" class="px-4 py-3 text-right font-semibold">Acciones</th>
+          <th scope="col" class="py-3 pr-6 font-semibold">Producto</th>
+          <th scope="col" class="py-3 pr-6 font-semibold">Categoría</th>
+          <th scope="col" class="py-3 pr-6 text-right font-semibold">Precio</th>
+          <th scope="col" class="py-3 pr-6 text-right font-semibold">Stock</th>
+          <th scope="col" class="py-3 pr-6 text-right font-semibold">Acciones</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-line">
         @for (product of products.value()!.items; track product.id) {
           <tr>
-            <td class="px-4 py-3">
-              <p class="font-medium">{{ product.name }}</p>
-              <p class="text-xs text-muted">{{ product.code }}</p>
+            <td class="py-3 pr-6">
+              <p class="font-semibold">{{ product.name }}</p>
+              <p class="amount mt-0.5 text-sm text-muted">{{ product.code }}</p>
             </td>
-            <td class="px-4 py-3">
-              <span
-                class="tone-text text-label uppercase"
-                [style.--tone]="tone(product.categoryId)"
-              >
-                {{ product.categoryName }}
-              </span>
+            <td class="py-3 pr-6 text-sm text-muted">{{ product.categoryName }}</td>
+            <td class="amount py-3 pr-6 text-right font-semibold">
+              {{ product.price | currency: 'USD' }}
             </td>
-            <td class="amount px-4 py-3 text-right">{{ product.price | currency: 'USD' }}</td>
-            <td class="amount px-4 py-3 text-right">
+            <td class="amount py-3 pr-6 text-right">
               @if (product.stock === 0) {
                 <span class="text-danger">Agotado</span>
               } @else {
                 {{ product.stock }}
               }
             </td>
-            <td class="px-4 py-3">
+            <td class="py-3">
               <div class="flex justify-end gap-1">
                 <button
                   type="button"
                   (click)="startEdit(product)"
-                  class="min-h-11 cursor-pointer rounded-(--radius-card) px-3 text-sm font-medium text-brand outline-offset-2 transition-colors duration-200 hover:bg-brand/5 focus-visible:outline-2 focus-visible:outline-brand"
+                  class="min-h-11 cursor-pointer rounded-(--radius-card) px-3 text-sm font-medium text-accent outline-offset-2 transition-colors duration-200 hover:bg-ink/5 focus-visible:outline-2 focus-visible:outline-accent"
                 >
                   Editar
                 </button>
                 <button
                   type="button"
                   (click)="withdraw(product)"
-                  class="min-h-11 cursor-pointer rounded-(--radius-card) px-3 text-sm font-medium text-muted outline-offset-2 transition-colors duration-200 hover:text-danger focus-visible:outline-2 focus-visible:outline-brand"
+                  class="min-h-11 cursor-pointer rounded-(--radius-card) px-3 text-sm font-medium text-muted outline-offset-2 transition-colors duration-200 hover:text-danger focus-visible:outline-2 focus-visible:outline-accent"
                 >
                   Retirar
                 </button>
@@ -104,7 +99,7 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="5" class="px-4 py-6 text-center text-muted">
+            <td colspan="5" class="py-6 text-center text-muted">
               No hay productos en el catálogo.
             </td>
           </tr>

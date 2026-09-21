@@ -13,22 +13,26 @@
   @if (history.value()!.items.length === 0) {
     <p class="mt-6 text-muted">
       Todavía no has comprado nada.
-      <a routerLink="/productos" class="rounded-sm text-brand underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand">Ver el catálogo</a>
+      <a
+        routerLink="/productos"
+        class="rounded-sm text-accent underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+        >Ver el catálogo</a
+      >
     </p>
   } @else {
-    <ul class="mt-6 divide-y divide-line rounded-(--radius-card) border border-line bg-surface">
+    <ul class="mt-8 border-t border-line">
       @for (order of history.value()!.items; track order.id) {
-        <li class="flex flex-wrap items-center gap-x-4 gap-y-1 p-4">
+        <li class="flex flex-wrap items-center gap-x-6 gap-y-1 border-b border-line py-4">
           <div class="min-w-0 flex-1">
-            <p class="font-medium">Compra #{{ order.id }}</p>
+            <p class="font-semibold">Compra #{{ order.id }}</p>
             <p class="text-sm text-muted">
               {{ order.placedAt | date: 'd MMM y, HH:mm' }} · {{ order.itemCount }} artículos
             </p>
           </div>
-          <p class="price text-lg font-semibold">{{ order.total | currency: 'USD' }}</p>
+          <p class="amount text-lg font-semibold">{{ order.total | currency: 'USD' }}</p>
           <a
             [routerLink]="['/compras', order.id]"
-            class="inline-flex min-h-11 items-center rounded-(--radius-card) border border-control px-3 text-sm font-medium transition-colors duration-200 hover:bg-brand/5 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
+            class="inline-flex min-h-11 items-center rounded-(--radius-card) border border-control px-3 text-sm font-medium transition-colors duration-200 hover:border-ink hover:bg-ink/5 outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
           >
             Ver detalle
           </a>

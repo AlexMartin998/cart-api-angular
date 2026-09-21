@@ -4,14 +4,17 @@
 } @else if (order.error()) {
   <h1 class="text-display">Detalle de la compra</h1>
   <app-state-panel tone="error" message="No encontramos esa compra." />
-  <a routerLink="/compras" class="mt-4 inline-block rounded-sm text-brand underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand">
+  <a
+    routerLink="/compras"
+    class="mt-4 inline-block rounded-sm text-accent underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+  >
     Volver a mis compras
   </a>
 } @else if (order.hasValue()) {
   @let detail = order.value()!;
 
   @if (justPlaced) {
-    <p role="status" class="mb-4 rounded-(--radius-card) bg-ok/10 px-4 py-3 text-sm text-ok">
+    <p role="status" class="mb-6 border-l-2 border-ok py-2 pl-4 text-sm text-ok">
       ¡Compra realizada! Guardamos el detalle en tu historial.
     </p>
   }
@@ -19,17 +22,17 @@
   <h1 class="text-display">Compra #{{ detail.id }}</h1>
   <p class="mt-1 text-sm text-muted">{{ detail.placedAt | date: 'd MMM y, HH:mm' }}</p>
 
-  <ul class="mt-6 divide-y divide-line rounded-(--radius-card) border border-line bg-surface">
+  <ul class="mt-8 border-t border-line">
     @for (line of detail.items; track line.productId) {
-      <li class="flex flex-wrap items-center gap-x-4 gap-y-1 p-4">
+      <li class="flex flex-wrap items-center gap-x-6 gap-y-1 border-b border-line py-4">
         <div class="min-w-0 flex-1">
-          <p class="font-medium">{{ line.productName }}</p>
-          <p class="text-xs text-muted">{{ line.productCode }}</p>
+          <p class="font-semibold">{{ line.productName }}</p>
+          <p class="amount mt-1 text-sm text-muted">{{ line.productCode }}</p>
         </div>
         <p class="amount text-sm text-muted">
           {{ line.quantity }} × {{ line.unitPrice | currency: 'USD' }}
         </p>
-        <p class="amount w-24 text-right font-medium">{{ line.lineTotal | currency: 'USD' }}</p>
+        <p class="amount w-24 text-right font-semibold">{{ line.lineTotal | currency: 'USD' }}</p>
       </li>
     }
   </ul>
@@ -40,7 +43,10 @@
     [total]="detail.total"
   />
 
-  <a routerLink="/compras" class="mt-6 inline-block rounded-sm text-brand underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand">
+  <a
+    routerLink="/compras"
+    class="mt-6 inline-block rounded-sm text-accent underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+  >
     Volver a mis compras
   </a>
 }

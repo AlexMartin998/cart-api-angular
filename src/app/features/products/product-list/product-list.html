@@ -1,6 +1,6 @@
 <h1 class="text-display">Productos</h1>
 
-<div class="mt-5 flex flex-col gap-3 sm:flex-row">
+<div class="mt-6 flex flex-col gap-3 sm:flex-row">
   <div class="flex-1">
     <label for="search" class="sr-only">Buscar por nombre o código</label>
     <input
@@ -8,7 +8,7 @@
       type="search"
       [formControl]="search"
       placeholder="Buscar por nombre o código"
-      class="w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-brand"
+      class="min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 placeholder:text-muted hover:border-ink focus-visible:outline-2 focus-visible:outline-accent"
     />
   </div>
 
@@ -17,7 +17,7 @@
     <select
       id="category"
       (change)="filterByCategory($any($event.target).value)"
-      class="w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
+      class="min-h-11 w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 transition-colors duration-200 hover:border-ink focus-visible:outline-2 focus-visible:outline-accent"
     >
       <option value="">Todas las categorías</option>
       @if (categories.hasValue()) {
@@ -39,64 +39,57 @@
     (retry)="products.reload()"
   />
 } @else if (products.hasValue()) {
-  <p class="mt-6 text-sm text-muted" aria-live="polite">
+  <p class="mt-8 text-label text-muted uppercase" aria-live="polite">
     {{ products.value().totalItems }}
     {{ products.value().totalItems === 1 ? 'producto' : 'productos' }}
   </p>
 
-  <ul class="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <ul class="mt-3 border-t border-line">
     @for (product of products.value().items; track product.id) {
-      <li
-        class="flex flex-col rounded-(--radius-card) border border-line bg-surface p-5 transition-colors duration-200 hover:border-control"
-      >
-        <div class="flex items-start gap-3" [style.--tone]="tone(product.categoryId)">
-          <p
-            class="tone-soft grid size-12 shrink-0 place-items-center rounded-(--radius-card) text-lg font-semibold"
-            aria-hidden="true"
-          >
-            {{ mark(product.code) }}
+      <li class="border-b border-line">
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-3 py-4">
+          <div class="min-w-0 flex-1 basis-56">
+            <h2 class="leading-snug font-semibold">{{ product.name }}</h2>
+            <p class="mt-1 truncate text-sm text-muted">
+              <span class="amount">{{ product.code }}</span>
+              <span class="mx-1.5 text-line" aria-hidden="true">|</span>
+              {{ product.categoryName }}
+              @if (product.description) {
+                <span class="mx-1.5 text-line" aria-hidden="true">|</span>{{ product.description }}
+              }
+            </p>
+          </div>
+
+          <p class="amount w-20 text-right text-lg font-semibold">
+            {{ product.price | currency: 'USD' }}
           </p>
 
-          <div class="min-w-0">
-            <p class="tone-text text-label uppercase">{{ product.categoryName }}</p>
-            <h2 class="mt-1.5 text-base leading-snug font-semibold">{{ product.name }}</h2>
-            <p class="mt-0.5 text-xs text-muted">{{ product.code }}</p>
-          </div>
+          <p class="w-24 text-right text-sm">
+            @if (product.stock === 0) {
+              <span class="text-danger">Agotado</span>
+            } @else {
+              <span class="text-muted"
+                ><span class="amount">{{ product.stock }}</span> en stock</span
+              >
+            }
+          </p>
+
+          <button
+            type="button"
+            [disabled]="product.stock === 0 || cart.isBusy(product.id)"
+            (click)="cart.add(product.id)"
+            class="min-h-11 w-28 cursor-pointer rounded-(--radius-card) border border-line px-3 text-sm font-medium outline-offset-2 transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-white focus-visible:outline-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:border-line disabled:text-muted disabled:hover:bg-transparent disabled:hover:text-muted"
+          >
+            {{ product.stock === 0 ? 'Sin stock' : 'Añadir' }}
+          </button>
         </div>
 
-        @if (product.description) {
-          <p class="mt-3 line-clamp-2 text-sm text-muted">{{ product.description }}</p>
-        }
-
-        <p class="price mt-4 text-2xl font-bold">{{ product.price | currency: 'USD' }}</p>
-
-        @if (product.stock === 0) {
-          <p
-            class="mt-2 inline-flex w-fit rounded-full bg-danger/10 px-2 py-0.5 text-label text-danger uppercase"
-          >
-            Agotado
-          </p>
-        } @else {
-          <p class="mt-2 text-sm text-muted">
-            <span class="amount">{{ product.stock }}</span> disponibles
-          </p>
-        }
-
-        <button
-          type="button"
-          [disabled]="product.stock === 0 || cart.isBusy(product.id)"
-          (click)="cart.add(product.id)"
-          class="mt-4 min-h-11 cursor-pointer rounded-(--radius-card) border border-brand px-3 text-sm font-medium text-brand outline-offset-2 transition-colors duration-200 hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:border-control disabled:text-muted disabled:hover:bg-transparent"
-        >
-          {{ product.stock === 0 ? 'Sin existencias' : 'Añadir al carrito' }}
-        </button>
-
         @if (cart.errorFor(product.id); as message) {
-          <p role="alert" class="mt-2 text-sm font-medium text-danger">{{ message }}</p>
+          <p role="alert" class="pb-4 text-sm font-medium text-danger">{{ message }}</p>
         }
       </li>
     } @empty {
-      <li class="sm:col-span-2 lg:col-span-3">
+      <li>
         <app-state-panel tone="empty" message="Ningún producto coincide con tu búsqueda." />
       </li>
     }
