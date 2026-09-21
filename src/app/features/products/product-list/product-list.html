@@ -1,1 +1,29 @@
 <h1 class="text-2xl font-semibold">Productos</h1>
+
+@if (products.isLoading()) {
+  <p class="mt-6 text-muted">Cargando productos…</p>
+} @else if (products.error()) {
+  <p class="mt-6 text-danger">No pudimos cargar el catálogo. Inténtalo de nuevo.</p>
+} @else if (products.hasValue()) {
+  <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    @for (product of products.value().items; track product.id) {
+      <li class="flex flex-col rounded-(--radius-card) border border-line bg-surface p-4">
+        <p class="text-xs text-muted">{{ product.categoryName }} · {{ product.code }}</p>
+        <h2 class="mt-1 font-medium">{{ product.name }}</h2>
+        @if (product.description) {
+          <p class="mt-1 line-clamp-2 text-sm text-muted">{{ product.description }}</p>
+        }
+
+        <p class="mt-3 text-lg font-semibold">{{ product.price | currency: 'USD' }}</p>
+
+        @if (product.stock === 0) {
+          <p class="mt-1 text-sm font-medium text-danger">Agotado</p>
+        } @else {
+          <p class="mt-1 text-sm text-muted">{{ product.stock }} disponibles</p>
+        }
+      </li>
+    } @empty {
+      <li class="text-muted">No hay productos que mostrar.</li>
+    }
+  </ul>
+}
