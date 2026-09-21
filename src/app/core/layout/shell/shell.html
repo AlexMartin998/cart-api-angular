@@ -1,0 +1,35 @@
+<div class="flex min-h-dvh flex-col">
+  <header class="border-b border-line bg-surface">
+    <div class="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+      <a routerLink="/productos" class="mr-auto text-lg font-semibold text-brand">Shop</a>
+
+      <nav aria-label="Principal" class="order-3 flex w-full gap-1 sm:order-none sm:w-auto">
+        @for (item of links; track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="bg-brand/10 text-brand"
+            class="flex-1 rounded-(--radius-card) px-3 py-1.5 text-center text-sm font-medium hover:bg-brand/5 sm:flex-none"
+          >
+            {{ item.label }}
+          </a>
+        }
+      </nav>
+
+      @if (user(); as signedIn) {
+        <span class="hidden text-sm text-muted sm:inline">{{ signedIn.fullName }}</span>
+      }
+
+      <button
+        type="button"
+        (click)="signOut()"
+        class="rounded-(--radius-card) border border-line px-3 py-1.5 text-sm font-medium hover:bg-brand/5"
+      >
+        Salir
+      </button>
+    </div>
+  </header>
+
+  <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-6">
+    <router-outlet />
+  </main>
+</div>
