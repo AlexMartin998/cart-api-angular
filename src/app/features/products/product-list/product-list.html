@@ -1,5 +1,34 @@
 <h1 class="text-2xl font-semibold">Productos</h1>
 
+<div class="mt-4 flex flex-col gap-3 sm:flex-row">
+  <div class="flex-1">
+    <label for="search" class="sr-only">Buscar por nombre o código</label>
+    <input
+      id="search"
+      type="search"
+      [formControl]="search"
+      placeholder="Buscar por nombre o código"
+      class="w-full rounded-(--radius-card) border border-line bg-surface px-3 py-2 outline-none focus-visible:border-brand"
+    />
+  </div>
+
+  <div class="sm:w-56">
+    <label for="category" class="sr-only">Categoría</label>
+    <select
+      id="category"
+      (change)="filterByCategory($any($event.target).value)"
+      class="w-full rounded-(--radius-card) border border-line bg-surface px-3 py-2 outline-none focus-visible:border-brand"
+    >
+      <option value="">Todas las categorías</option>
+      @if (categories.hasValue()) {
+        @for (category of categories.value(); track category.id) {
+          <option [value]="category.id">{{ category.name }}</option>
+        }
+      }
+    </select>
+  </div>
+</div>
+
 @if (products.isLoading()) {
   <p class="mt-6 text-muted">Cargando productos…</p>
 } @else if (products.error()) {
@@ -23,7 +52,29 @@
         }
       </li>
     } @empty {
-      <li class="text-muted">No hay productos que mostrar.</li>
+      <li class="text-muted">Ningún producto coincide con tu búsqueda.</li>
     }
   </ul>
+
+  @if (totalPages() > 1) {
+    <nav aria-label="Paginación" class="mt-6 flex items-center justify-center gap-3">
+      <button
+        type="button"
+        [disabled]="page() === 1"
+        (click)="goToPage(page() - 1)"
+        class="rounded-(--radius-card) border border-line px-3 py-1.5 text-sm disabled:opacity-40"
+      >
+        Anterior
+      </button>
+      <span class="text-sm text-muted">Página {{ page() }} de {{ totalPages() }}</span>
+      <button
+        type="button"
+        [disabled]="page() === totalPages()"
+        (click)="goToPage(page() + 1)"
+        class="rounded-(--radius-card) border border-line px-3 py-1.5 text-sm disabled:opacity-40"
+      >
+        Siguiente
+      </button>
+    </nav>
+  }
 }
