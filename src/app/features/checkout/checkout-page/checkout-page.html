@@ -1,9 +1,9 @@
-<h1 class="text-2xl font-semibold">Confirmar compra</h1>
+<h1 class="text-display">Confirmar compra</h1>
 
 @if (store.isEmpty()) {
   <p class="mt-6 text-muted">
     Tu carrito está vacío.
-    <a routerLink="/productos" class="text-brand underline underline-offset-2">Ver el catálogo</a>
+    <a routerLink="/productos" class="rounded-sm text-brand underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand">Ver el catálogo</a>
   </p>
 } @else {
   <p class="mt-2 text-sm text-muted">Revisa lo que vas a comprar antes de confirmar.</p>
@@ -18,10 +18,10 @@
             <p class="text-sm font-medium text-danger">No se cobrará: ya no se puede vender.</p>
           }
         </div>
-        <p class="text-sm text-muted">
-          {{ line.quantity }} x {{ line.unitPrice | currency: 'USD' }}
+        <p class="amount text-sm text-muted">
+          {{ line.quantity }} × {{ line.unitPrice | currency: 'USD' }}
         </p>
-        <p class="w-24 text-right font-medium">{{ line.lineTotal | currency: 'USD' }}</p>
+        <p class="amount w-24 text-right font-medium">{{ line.lineTotal | currency: 'USD' }}</p>
       </li>
     }
   </ul>
@@ -39,7 +39,7 @@
   <div class="mt-6 flex flex-wrap justify-end gap-3">
     <a
       routerLink="/carrito"
-      class="rounded-(--radius-card) border border-line px-4 py-2 text-sm font-medium"
+      class="inline-flex min-h-11 items-center rounded-(--radius-card) border border-control px-4 text-sm font-medium transition-colors duration-200 hover:bg-brand/5 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
     >
       Volver al carrito
     </a>
@@ -47,7 +47,7 @@
       type="button"
       [disabled]="placing() || !store.canCheckout()"
       (click)="confirm()"
-      class="rounded-(--radius-card) bg-brand px-4 py-2 font-medium text-white hover:bg-brand-strong disabled:opacity-40"
+      class="min-h-11 cursor-pointer rounded-(--radius-card) bg-brand px-4 font-medium text-white transition-colors duration-200 hover:bg-brand-strong outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-40"
     >
       {{ placing() ? 'Confirmando…' : 'Confirmar compra' }}
     </button>

@@ -4,9 +4,9 @@ import { CartStore } from '../../../features/cart/cart.store';
 import { AuthService } from '../../auth/auth.service';
 
 const NAV_LINKS = [
-  { path: '/productos', label: 'Productos' },
-  { path: '/carrito', label: 'Carrito' },
-  { path: '/compras', label: 'Mis compras' },
+  { path: '/productos', label: 'Productos', badge: false },
+  { path: '/carrito', label: 'Carrito', badge: true },
+  { path: '/compras', label: 'Mis compras', badge: false },
 ] as const;
 
 @Component({

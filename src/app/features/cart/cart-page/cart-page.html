@@ -1,11 +1,16 @@
-<h1 class="text-2xl font-semibold">Tu carrito</h1>
+<h1 class="text-display">Tu carrito</h1>
 
 @if (store.isLoading()) {
-  <p class="mt-6 text-muted">Cargando tu carrito…</p>
+  <app-state-panel tone="loading" message="Cargando tu carrito…" />
 } @else if (store.hasFailed()) {
-  <p class="mt-6 text-danger">No pudimos cargar tu carrito. Inténtalo de nuevo.</p>
+  <app-state-panel
+    tone="error"
+    message="No pudimos cargar tu carrito."
+    retryLabel="Reintentar"
+    (retry)="store.refresh()"
+  />
 } @else if (store.isEmpty()) {
-  <p class="mt-6 text-muted">Tu carrito está vacío. Añade algo desde el catálogo.</p>
+  <app-state-panel tone="empty" message="Tu carrito está vacío. Añade algo desde el catálogo." />
 } @else {
   <ul class="mt-6 space-y-3">
     @for (line of store.cart().items; track line.productId) {
@@ -24,7 +29,7 @@
     <button
       type="button"
       (click)="store.clear()"
-      class="text-sm text-muted underline underline-offset-2 hover:text-danger"
+      class="inline-flex min-h-11 cursor-pointer items-center rounded-sm px-1 text-sm text-muted underline underline-offset-2 transition-colors duration-200 hover:text-danger outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
     >
       Vaciar carrito
     </button>
@@ -45,7 +50,7 @@
   <div class="mt-6 flex justify-end">
     <a
       routerLink="/checkout"
-      class="rounded-(--radius-card) bg-brand px-4 py-2 font-medium text-white hover:bg-brand-strong"
+      class="inline-flex min-h-11 cursor-pointer items-center rounded-(--radius-card) bg-brand px-4 font-medium text-white transition-colors duration-200 hover:bg-brand-strong outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
       [class.pointer-events-none]="!store.canCheckout()"
       [class.opacity-40]="!store.canCheckout()"
       [attr.aria-disabled]="!store.canCheckout()"

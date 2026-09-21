@@ -1,19 +1,24 @@
 <div class="flex min-h-dvh flex-col">
   <header class="border-b border-line bg-surface">
     <div class="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
-      <a routerLink="/productos" class="mr-auto text-lg font-semibold text-brand">Shop</a>
+      <a
+        routerLink="/productos"
+        class="mr-auto rounded-sm text-lg font-semibold tracking-tight text-brand outline-offset-4 focus-visible:outline-2 focus-visible:outline-brand"
+        >Shop</a
+      >
 
       <nav aria-label="Principal" class="order-3 flex w-full gap-1 sm:order-none sm:w-auto">
         @for (item of links; track item.path) {
           <a
             [routerLink]="item.path"
             routerLinkActive="bg-brand/10 text-brand"
-            class="flex-1 rounded-(--radius-card) px-3 py-1.5 text-center text-sm font-medium hover:bg-brand/5 sm:flex-none"
+            class="flex min-h-11 flex-1 items-center justify-center rounded-(--radius-card) px-3 text-center text-sm font-medium outline-offset-2 transition-colors duration-200 hover:bg-brand/5 focus-visible:outline-2 focus-visible:outline-brand sm:flex-none"
           >
             {{ item.label }}
-            @if (item.path === '/carrito' && itemCount() > 0) {
+            @if (item.badge && itemCount() > 0) {
               <span
-                class="ml-1 inline-block rounded-full bg-brand px-1.5 text-xs font-semibold text-white"
+                class="amount ml-1.5 inline-block rounded-full bg-brand px-1.5 text-xs font-semibold text-white"
+                [attr.aria-label]="itemCount() + ' artículos en el carrito'"
                 >{{ itemCount() }}</span
               >
             }
@@ -28,7 +33,7 @@
       <button
         type="button"
         (click)="signOut()"
-        class="rounded-(--radius-card) border border-line px-3 py-1.5 text-sm font-medium hover:bg-brand/5"
+        class="min-h-11 cursor-pointer rounded-(--radius-card) border border-control px-3 text-sm font-medium outline-offset-2 transition-colors duration-200 hover:bg-brand/5 focus-visible:outline-2 focus-visible:outline-brand"
       >
         Salir
       </button>

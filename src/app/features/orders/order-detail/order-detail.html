@@ -1,10 +1,10 @@
 @if (order.isLoading()) {
-  <h1 class="text-2xl font-semibold">Detalle de la compra</h1>
-  <p class="mt-6 text-muted">Cargando la compra…</p>
+  <h1 class="text-display">Detalle de la compra</h1>
+  <app-state-panel tone="loading" message="Cargando la compra…" />
 } @else if (order.error()) {
-  <h1 class="text-2xl font-semibold">Detalle de la compra</h1>
-  <p class="mt-6 text-danger">No encontramos esa compra.</p>
-  <a routerLink="/compras" class="mt-2 inline-block text-brand underline underline-offset-2">
+  <h1 class="text-display">Detalle de la compra</h1>
+  <app-state-panel tone="error" message="No encontramos esa compra." />
+  <a routerLink="/compras" class="mt-4 inline-block rounded-sm text-brand underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand">
     Volver a mis compras
   </a>
 } @else if (order.hasValue()) {
@@ -16,7 +16,7 @@
     </p>
   }
 
-  <h1 class="text-2xl font-semibold">Compra #{{ detail.id }}</h1>
+  <h1 class="text-display">Compra #{{ detail.id }}</h1>
   <p class="mt-1 text-sm text-muted">{{ detail.placedAt | date: 'd MMM y, HH:mm' }}</p>
 
   <ul class="mt-6 divide-y divide-line rounded-(--radius-card) border border-line bg-surface">
@@ -26,10 +26,10 @@
           <p class="font-medium">{{ line.productName }}</p>
           <p class="text-xs text-muted">{{ line.productCode }}</p>
         </div>
-        <p class="text-sm text-muted">
+        <p class="amount text-sm text-muted">
           {{ line.quantity }} × {{ line.unitPrice | currency: 'USD' }}
         </p>
-        <p class="w-24 text-right font-medium">{{ line.lineTotal | currency: 'USD' }}</p>
+        <p class="amount w-24 text-right font-medium">{{ line.lineTotal | currency: 'USD' }}</p>
       </li>
     }
   </ul>
@@ -40,7 +40,7 @@
     [total]="detail.total"
   />
 
-  <a routerLink="/compras" class="mt-6 inline-block text-brand underline underline-offset-2">
+  <a routerLink="/compras" class="mt-6 inline-block rounded-sm text-brand underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand">
     Volver a mis compras
   </a>
 }

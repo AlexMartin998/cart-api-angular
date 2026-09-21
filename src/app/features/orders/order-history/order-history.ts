@@ -2,11 +2,12 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Pager } from '../../../shared/ui/pager/pager';
+import { StatePanel } from '../../../shared/ui/state-panel/state-panel';
 import { OrdersService } from '../orders.service';
 
 @Component({
   selector: 'app-order-history',
-  imports: [CurrencyPipe, DatePipe, RouterLink, Pager],
+  imports: [CurrencyPipe, DatePipe, RouterLink, Pager, StatePanel],
   templateUrl: './order-history.html',
 })
 export default class OrderHistory {

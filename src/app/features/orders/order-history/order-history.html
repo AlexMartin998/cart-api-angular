@@ -1,14 +1,19 @@
-<h1 class="text-2xl font-semibold">Mis compras</h1>
+<h1 class="text-display">Mis compras</h1>
 
 @if (history.isLoading()) {
-  <p class="mt-6 text-muted">Cargando tus compras…</p>
+  <app-state-panel tone="loading" message="Cargando tus compras…" />
 } @else if (history.error()) {
-  <p class="mt-6 text-danger">No pudimos cargar tu historial. Inténtalo de nuevo.</p>
+  <app-state-panel
+    tone="error"
+    message="No pudimos cargar tu historial."
+    retryLabel="Reintentar"
+    (retry)="history.reload()"
+  />
 } @else if (history.hasValue()) {
   @if (history.value()!.items.length === 0) {
     <p class="mt-6 text-muted">
       Todavía no has comprado nada.
-      <a routerLink="/productos" class="text-brand underline underline-offset-2">Ver el catálogo</a>
+      <a routerLink="/productos" class="rounded-sm text-brand underline underline-offset-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand">Ver el catálogo</a>
     </p>
   } @else {
     <ul class="mt-6 divide-y divide-line rounded-(--radius-card) border border-line bg-surface">
@@ -20,10 +25,10 @@
               {{ order.placedAt | date: 'd MMM y, HH:mm' }} · {{ order.itemCount }} artículos
             </p>
           </div>
-          <p class="font-medium">{{ order.total | currency: 'USD' }}</p>
+          <p class="price text-lg font-semibold">{{ order.total | currency: 'USD' }}</p>
           <a
             [routerLink]="['/compras', order.id]"
-            class="rounded-(--radius-card) border border-line px-3 py-1.5 text-sm font-medium"
+            class="inline-flex min-h-11 items-center rounded-(--radius-card) border border-control px-3 text-sm font-medium transition-colors duration-200 hover:bg-brand/5 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
           >
             Ver detalle
           </a>

@@ -1,6 +1,6 @@
-<h1 class="text-2xl font-semibold">Productos</h1>
+<h1 class="text-display">Productos</h1>
 
-<div class="mt-4 flex flex-col gap-3 sm:flex-row">
+<div class="mt-5 flex flex-col gap-3 sm:flex-row">
   <div class="flex-1">
     <label for="search" class="sr-only">Buscar por nombre o código</label>
     <input
@@ -8,7 +8,7 @@
       type="search"
       [formControl]="search"
       placeholder="Buscar por nombre o código"
-      class="w-full rounded-(--radius-card) border border-line bg-surface px-3 py-2 outline-none focus-visible:border-brand"
+      class="w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 placeholder:text-muted focus-visible:outline-2 focus-visible:outline-brand"
     />
   </div>
 
@@ -17,7 +17,7 @@
     <select
       id="category"
       (change)="filterByCategory($any($event.target).value)"
-      class="w-full rounded-(--radius-card) border border-line bg-surface px-3 py-2 outline-none focus-visible:border-brand"
+      class="w-full rounded-(--radius-card) border border-control bg-surface px-3 py-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
     >
       <option value="">Todas las categorías</option>
       @if (categories.hasValue()) {
@@ -30,32 +30,63 @@
 </div>
 
 @if (products.isLoading()) {
-  <p class="mt-6 text-muted">Cargando productos…</p>
+  <app-state-panel tone="loading" message="Cargando productos…" />
 } @else if (products.error()) {
-  <p class="mt-6 text-danger">No pudimos cargar el catálogo. Inténtalo de nuevo.</p>
+  <app-state-panel
+    tone="error"
+    message="No pudimos cargar el catálogo."
+    retryLabel="Reintentar"
+    (retry)="products.reload()"
+  />
 } @else if (products.hasValue()) {
-  <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <p class="mt-6 text-sm text-muted" aria-live="polite">
+    {{ products.value().totalItems }}
+    {{ products.value().totalItems === 1 ? 'producto' : 'productos' }}
+  </p>
+
+  <ul class="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     @for (product of products.value().items; track product.id) {
-      <li class="flex flex-col rounded-(--radius-card) border border-line bg-surface p-4">
-        <p class="text-xs text-muted">{{ product.categoryName }} · {{ product.code }}</p>
-        <h2 class="mt-1 font-medium">{{ product.name }}</h2>
+      <li
+        class="flex flex-col rounded-(--radius-card) border border-line bg-surface p-5 transition-colors duration-200 hover:border-control"
+      >
+        <div class="flex items-start gap-3" [style.--tone]="tone(product.categoryId)">
+          <p
+            class="tone-soft grid size-12 shrink-0 place-items-center rounded-(--radius-card) text-lg font-semibold"
+            aria-hidden="true"
+          >
+            {{ mark(product.code) }}
+          </p>
+
+          <div class="min-w-0">
+            <p class="tone-text text-label uppercase">{{ product.categoryName }}</p>
+            <h2 class="mt-1.5 text-base leading-snug font-semibold">{{ product.name }}</h2>
+            <p class="mt-0.5 text-xs text-muted">{{ product.code }}</p>
+          </div>
+        </div>
+
         @if (product.description) {
-          <p class="mt-1 line-clamp-2 text-sm text-muted">{{ product.description }}</p>
+          <p class="mt-3 line-clamp-2 text-sm text-muted">{{ product.description }}</p>
         }
 
-        <p class="mt-3 text-lg font-semibold">{{ product.price | currency: 'USD' }}</p>
+        <p class="price mt-4 text-2xl font-bold">{{ product.price | currency: 'USD' }}</p>
 
         @if (product.stock === 0) {
-          <p class="mt-1 text-sm font-medium text-danger">Agotado</p>
+          <p
+            class="mt-2 inline-flex w-fit rounded-full bg-danger/10 px-2 py-0.5 text-label text-danger uppercase"
+          >
+            Agotado
+          </p>
         } @else {
-          <p class="mt-1 text-sm text-muted">{{ product.stock }} disponibles</p>
+          <p class="mt-2 text-sm text-muted">
+            <span class="amount">{{ product.stock }}</span> disponibles
+          </p>
         }
 
         <button
           type="button"
           [disabled]="product.stock === 0 || cart.isBusy(product.id)"
           (click)="cart.add(product.id)"
-          class="mt-3 rounded-(--radius-card) bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand-strong disabled:opacity-40"
+          class="mt-4 min-h-11 cursor-pointer rounded-(--radius-card) border border-brand px-3 text-sm font-medium text-brand outline-offset-2 transition-colors duration-200 hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:border-control disabled:text-muted disabled:hover:bg-transparent"
         >
           {{ product.stock === 0 ? 'Sin existencias' : 'Añadir al carrito' }}
         </button>
@@ -65,7 +96,9 @@
         }
       </li>
     } @empty {
-      <li class="text-muted">Ningún producto coincide con tu búsqueda.</li>
+      <li class="sm:col-span-2 lg:col-span-3">
+        <app-state-panel tone="empty" message="Ningún producto coincide con tu búsqueda." />
+      </li>
     }
   </ul>
 

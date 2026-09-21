@@ -4,14 +4,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { CartStore } from '../../cart/cart.store';
+import { StatePanel } from '../../../shared/ui/state-panel/state-panel';
 import { Pager } from '../../../shared/ui/pager/pager';
+import { categoryTone, productMark } from '../catalog-visuals';
 import { ProductsService } from '../products.service';
 
 const TYPING_PAUSE_MS = 300;
 
 @Component({
   selector: 'app-product-list',
-  imports: [CurrencyPipe, ReactiveFormsModule, Pager],
+  imports: [CurrencyPipe, ReactiveFormsModule, Pager, StatePanel],
   templateUrl: './product-list.html',
 })
 export default class ProductList {
@@ -35,6 +37,9 @@ export default class ProductList {
   protected filterByCategory(value: string): void {
     this.service.setCategory(value ? Number(value) : null);
   }
+
+  protected readonly tone = categoryTone;
+  protected readonly mark = productMark;
 
   protected goToPage(page: number): void {
     this.service.goToPage(page);
