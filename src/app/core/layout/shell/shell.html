@@ -8,7 +8,7 @@
       >
 
       <nav aria-label="Principal" class="order-3 flex w-full gap-1 sm:order-none sm:w-auto">
-        @for (item of links; track item.path) {
+        @for (item of links(); track item.path) {
           <a
             [routerLink]="item.path"
             routerLinkActive="bg-brand/10 text-brand"

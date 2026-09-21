@@ -1,0 +1,17 @@
+name: cartfront
+
+services:
+  web:
+    build: .
+    ports:
+      - "${PORT:-8081}:80"
+    environment:
+      API_UPSTREAM: ${API_UPSTREAM:-http://api:8080}
+      NGINX_ENVSUBST_FILTER: "API_"
+    networks:
+      - cartapi
+
+networks:
+  cartapi:
+    external: true
+    name: ${API_NETWORK:-cartapi_default}

@@ -95,3 +95,50 @@ textarea {
     transition-duration: 0.01ms !important;
   }
 }
+
+dialog {
+  --dialog-max-height: calc(100dvh - 3rem);
+  margin: auto;
+  max-height: var(--dialog-max-height);
+  color: var(--color-ink);
+  box-shadow: 0 1.5rem 3rem -1rem color-mix(in oklab, var(--color-ink) 30%, transparent);
+  opacity: 0;
+  scale: 0.98;
+  transition:
+    opacity 180ms ease-out,
+    scale 180ms ease-out,
+    overlay 180ms allow-discrete,
+    display 180ms allow-discrete;
+}
+
+dialog[open] {
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  dialog[open] {
+    opacity: 0;
+    scale: 0.98;
+  }
+}
+
+dialog::backdrop {
+  background-color: color-mix(in oklab, var(--color-ink) 45%, transparent);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition:
+    opacity 180ms ease-out,
+    overlay 180ms allow-discrete,
+    display 180ms allow-discrete;
+}
+
+dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  dialog[open]::backdrop {
+    opacity: 0;
+  }
+}

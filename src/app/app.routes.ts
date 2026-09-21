@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from './core/auth/admin-guard';
 import { guestOnlyGuard } from './core/auth/guest-only-guard';
 import { signedInGuard } from './core/auth/signed-in-guard';
 
@@ -38,6 +39,13 @@ export const routes: Routes = [
         path: 'compras/:id',
         title: 'Detalle de la compra',
         loadComponent: () => import('./features/orders/order-detail/order-detail'),
+      },
+
+      {
+        path: 'admin/productos',
+        title: 'Administrar productos',
+        canMatch: [adminGuard],
+        loadComponent: () => import('./features/admin/admin-products-page/admin-products-page'),
       },
       { path: '', pathMatch: 'full', redirectTo: 'productos' },
     ],

@@ -1,0 +1,117 @@
+<div class="flex flex-wrap items-center gap-4">
+  <h1 class="text-display mr-auto">Productos</h1>
+
+  <button
+    type="button"
+    (click)="startNew()"
+    class="min-h-11 cursor-pointer rounded-(--radius-card) bg-brand px-4 font-medium text-white outline-offset-2 transition-colors duration-200 hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-brand"
+  >
+    Nuevo producto
+  </button>
+</div>
+
+@if (notice(); as message) {
+  <p role="status" class="mt-4 rounded-(--radius-card) bg-brand/10 px-4 py-3 text-sm">
+    {{ message }}
+  </p>
+}
+
+<dialog
+  #dialog
+  (close)="close()"
+  (click)="dismiss($event)"
+  aria-labelledby="product-form-title"
+  class="w-[min(38rem,calc(100vw-2rem))] overflow-hidden rounded-(--radius-card) bg-surface p-0 text-ink"
+>
+  @if (open()) {
+    <app-product-form
+      [editing]="editing()"
+      [opened]="opened()"
+      [categories]="categories.hasValue() ? categories.value()! : []"
+      [saving]="saving()"
+      [failure]="failure()"
+      (save)="submit($event)"
+      (cancel)="close()"
+    />
+  }
+</dialog>
+
+@if (products.isLoading()) {
+  <app-state-panel tone="loading" message="Cargando productos…" />
+} @else if (products.error()) {
+  <app-state-panel
+    tone="error"
+    message="No pudimos cargar el catálogo."
+    retryLabel="Reintentar"
+    (retry)="products.reload()"
+  />
+} @else if (products.hasValue()) {
+  <div class="mt-6 overflow-x-auto rounded-(--radius-card) border border-line bg-surface">
+    <table class="w-full text-sm">
+      <caption class="sr-only">
+        Productos del catálogo, con su precio y existencias
+      </caption>
+      <thead class="border-b border-line text-left">
+        <tr>
+          <th scope="col" class="px-4 py-3 font-semibold">Producto</th>
+          <th scope="col" class="px-4 py-3 font-semibold">Categoría</th>
+          <th scope="col" class="px-4 py-3 text-right font-semibold">Precio</th>
+          <th scope="col" class="px-4 py-3 text-right font-semibold">Stock</th>
+          <th scope="col" class="px-4 py-3 text-right font-semibold">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-line">
+        @for (product of products.value()!.items; track product.id) {
+          <tr>
+            <td class="px-4 py-3">
+              <p class="font-medium">{{ product.name }}</p>
+              <p class="text-xs text-muted">{{ product.code }}</p>
+            </td>
+            <td class="px-4 py-3">
+              <span
+                class="tone-text text-label uppercase"
+                [style.--tone]="tone(product.categoryId)"
+              >
+                {{ product.categoryName }}
+              </span>
+            </td>
+            <td class="amount px-4 py-3 text-right">{{ product.price | currency: 'USD' }}</td>
+            <td class="amount px-4 py-3 text-right">
+              @if (product.stock === 0) {
+                <span class="text-danger">Agotado</span>
+              } @else {
+                {{ product.stock }}
+              }
+            </td>
+            <td class="px-4 py-3">
+              <div class="flex justify-end gap-1">
+                <button
+                  type="button"
+                  (click)="startEdit(product)"
+                  class="min-h-11 cursor-pointer rounded-(--radius-card) px-3 text-sm font-medium text-brand outline-offset-2 transition-colors duration-200 hover:bg-brand/5 focus-visible:outline-2 focus-visible:outline-brand"
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  (click)="withdraw(product)"
+                  class="min-h-11 cursor-pointer rounded-(--radius-card) px-3 text-sm font-medium text-muted outline-offset-2 transition-colors duration-200 hover:text-danger focus-visible:outline-2 focus-visible:outline-brand"
+                >
+                  Retirar
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="px-4 py-6 text-center text-muted">
+              No hay productos en el catálogo.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <app-pager [page]="page()" [totalPages]="totalPages()" (pageChange)="goToPage($event)" />
+}

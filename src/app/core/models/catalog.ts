@@ -20,3 +20,12 @@ export interface ProductQuery {
   page: number;
   pageSize: number;
 }
+
+export interface ProductInput {
+  code: string;
+  name: string;
+  description: string | null;
+  price: number;
+  stock: number;
+  categoryId: number;
+}
