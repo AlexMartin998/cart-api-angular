@@ -31,7 +31,7 @@ up:
 	@docker network inspect $(NETWORK) >/dev/null 2>&1 \
 	  || { echo "No existe la red '$(NETWORK)'. Levanta antes CartAPI: make up en su repo."; exit 1; }
 	$(COMPOSE) up -d --build
-	@echo "Listo  →  $(FRONT)"
+	@echo "Listo  ->  $(FRONT)"
 
 down:
 	$(COMPOSE) down
