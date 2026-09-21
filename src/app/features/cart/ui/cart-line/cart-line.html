@@ -1,0 +1,55 @@
+<div class="min-w-0 flex-1">
+  <p class="font-medium">{{ line().name ?? 'Producto retirado' }}</p>
+  <p class="text-xs text-muted">{{ line().code }}</p>
+
+  @switch (line().status) {
+    @case ('insufficient_stock') {
+      <p class="mt-1 text-sm font-medium text-danger">
+        Solo quedan {{ line().availableStock }} disponibles. Esta línea no se cobrará.
+      </p>
+    }
+    @case ('unavailable') {
+      <p class="mt-1 text-sm font-medium text-danger">
+        Ya no está a la venta. Esta línea no se cobrará.
+      </p>
+    }
+  }
+</div>
+
+<div class="flex items-center gap-1">
+  <button
+    type="button"
+    [disabled]="busy()"
+    (click)="quantityChange.emit(line().quantity - 1)"
+    [attr.aria-label]="'Quitar una unidad de ' + line().name"
+    class="size-8 rounded-(--radius-card) border border-line text-lg leading-none disabled:opacity-40"
+  >
+    −
+  </button>
+  <span class="w-10 text-center text-sm" aria-live="polite">{{ line().quantity }}</span>
+  <button
+    type="button"
+    [disabled]="busy()"
+    (click)="quantityChange.emit(line().quantity + 1)"
+    [attr.aria-label]="'Añadir una unidad de ' + line().name"
+    class="size-8 rounded-(--radius-card) border border-line text-lg leading-none disabled:opacity-40"
+  >
+    +
+  </button>
+</div>
+
+<p class="w-20 text-right text-sm text-muted">{{ line().unitPrice | currency: 'USD' }}</p>
+<p class="w-24 text-right font-medium">{{ line().lineTotal | currency: 'USD' }}</p>
+
+<button
+  type="button"
+  [disabled]="busy()"
+  (click)="removed.emit()"
+  class="text-sm text-muted underline underline-offset-2 hover:text-danger disabled:opacity-40"
+>
+  Eliminar
+</button>
+
+@if (error(); as message) {
+  <p role="alert" class="w-full text-sm font-medium text-danger">{{ message }}</p>
+}

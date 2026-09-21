@@ -3,12 +3,13 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { toApiError } from '../../../core/http/api-error';
 import { errorMessage } from '../../../core/http/error-messages';
+import { OrderTotals } from '../../../shared/ui/order-totals/order-totals';
 import { CartStore } from '../../cart/cart.store';
 import { OrdersService } from '../../orders/orders.service';
 
 @Component({
   selector: 'app-checkout-page',
-  imports: [CurrencyPipe, RouterLink],
+  imports: [CurrencyPipe, RouterLink, OrderTotals],
   templateUrl: './checkout-page.html',
 })
 export default class CheckoutPage {

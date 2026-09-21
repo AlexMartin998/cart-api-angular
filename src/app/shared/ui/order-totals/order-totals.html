@@ -1,0 +1,16 @@
+<dl class="mt-6 ml-auto w-full max-w-xs space-y-1 text-sm">
+  <div class="flex justify-between">
+    <dt class="text-muted">Subtotal</dt>
+    <dd>{{ subtotal() | currency: 'USD' }}</dd>
+  </div>
+  @if (discount() > 0) {
+    <div class="flex justify-between text-ok">
+      <dt>Descuento</dt>
+      <dd>−{{ discount() | currency: 'USD' }}</dd>
+    </div>
+  }
+  <div class="flex justify-between border-t border-line pt-1 text-base font-semibold">
+    <dt>Total</dt>
+    <dd>{{ total() | currency: 'USD' }}</dd>
+  </div>
+</dl>
