@@ -44,6 +44,10 @@ function render(): ComponentFixture<ProductList> {
   const fixture = TestBed.createComponent(ProductList);
   TestBed.tick();
 
+  TestBed.inject(HttpTestingController)
+    .expectOne(`${environment.apiUrl}/categories`)
+    .flush([{ id: 1, name: 'Electrónica' }]);
+
   return fixture;
 }
 

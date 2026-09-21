@@ -1,1 +1,58 @@
 <h1 class="text-2xl font-semibold">Tu carrito</h1>
+
+@if (store.isLoading()) {
+  <p class="mt-6 text-muted">Cargando tu carrito…</p>
+} @else if (store.hasFailed()) {
+  <p class="mt-6 text-danger">No pudimos cargar tu carrito. Inténtalo de nuevo.</p>
+} @else if (store.isEmpty()) {
+  <p class="mt-6 text-muted">Tu carrito está vacío. Añade algo desde el catálogo.</p>
+} @else {
+  <ul class="mt-6 space-y-3">
+    @for (line of store.cart().items; track line.productId) {
+      <li
+        class="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-(--radius-card) border p-4"
+        [class.border-line]="line.status === 'ok'"
+        [class.bg-surface]="line.status === 'ok'"
+        [class.border-danger]="line.status !== 'ok'"
+      >
+        <div class="min-w-0 flex-1">
+          <p class="font-medium">{{ line.name ?? 'Producto retirado' }}</p>
+          <p class="text-xs text-muted">{{ line.code }}</p>
+
+          @switch (line.status) {
+            @case ('insufficient_stock') {
+              <p class="mt-1 text-sm font-medium text-danger">
+                Solo quedan {{ line.availableStock }} disponibles. Esta línea no se cobrará.
+              </p>
+            }
+            @case ('unavailable') {
+              <p class="mt-1 text-sm font-medium text-danger">
+                Ya no está a la venta. Esta línea no se cobrará.
+              </p>
+            }
+          }
+        </div>
+
+        <p class="text-sm text-muted">{{ line.quantity }} × {{ line.unitPrice | currency: 'USD' }}</p>
+        <p class="w-24 text-right font-medium">{{ line.lineTotal | currency: 'USD' }}</p>
+      </li>
+    }
+  </ul>
+
+  <dl class="mt-6 ml-auto w-full max-w-xs space-y-1 text-sm">
+    <div class="flex justify-between">
+      <dt class="text-muted">Subtotal</dt>
+      <dd>{{ store.cart().subtotal | currency: 'USD' }}</dd>
+    </div>
+    @if (store.cart().discount > 0) {
+      <div class="flex justify-between text-ok">
+        <dt>Descuento</dt>
+        <dd>−{{ store.cart().discount | currency: 'USD' }}</dd>
+      </div>
+    }
+    <div class="flex justify-between border-t border-line pt-1 text-base font-semibold">
+      <dt>Total</dt>
+      <dd>{{ store.cart().total | currency: 'USD' }}</dd>
+    </div>
+  </dl>
+}
