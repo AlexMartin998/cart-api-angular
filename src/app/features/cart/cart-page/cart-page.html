@@ -108,4 +108,16 @@
       Quita las líneas marcadas en rojo para poder finalizar la compra.
     </p>
   }
+
+  <div class="mt-6 flex justify-end">
+    <a
+      routerLink="/checkout"
+      class="rounded-(--radius-card) bg-brand px-4 py-2 font-medium text-white hover:bg-brand-strong"
+      [class.pointer-events-none]="!store.canCheckout()"
+      [class.opacity-40]="!store.canCheckout()"
+      [attr.aria-disabled]="!store.canCheckout()"
+    >
+      Finalizar compra
+    </a>
+  </div>
 }

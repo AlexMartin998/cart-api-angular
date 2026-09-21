@@ -6,10 +6,6 @@ import { toApiError } from '../../core/http/api-error';
 import { errorMessage } from '../../core/http/error-messages';
 import { Cart, EMPTY_CART } from '../../core/models/cart';
 
-/**
- * The cart lives on the server. This store only mirrors it: every mutation answers with the
- * recalculated cart and that answer replaces the state. Nothing here computes an amount.
- */
 @Service()
 export class CartStore {
   private readonly http = inject(HttpClient);
@@ -28,7 +24,6 @@ export class CartStore {
   readonly itemCount = computed(() => this.state().itemCount);
   readonly isEmpty = computed(() => this.state().items.length === 0);
 
-  /** Lines the server refuses to sell: they do not add to the subtotal either. */
   readonly hasUnsellableLines = computed(() =>
     this.state().items.some((line) => line.status !== 'ok'),
   );
@@ -59,29 +54,23 @@ export class CartStore {
     });
   }
 
-  /** POST adds to whatever is already there. */
   add(productId: number, quantity = 1): void {
     this.mutate(productId, this.http.post<Cart>(`${this.url}/items`, { productId, quantity }));
   }
 
-  /** PUT replaces the quantity; it does not add to it. */
   setQuantity(productId: number, quantity: number): void {
     if (quantity < 1) {
       this.remove(productId);
       return;
     }
 
-    this.mutate(
-      productId,
-      this.http.put<Cart>(`${this.url}/items/${productId}`, { quantity }),
-    );
+    this.mutate(productId, this.http.put<Cart>(`${this.url}/items/${productId}`, { quantity }));
   }
 
   remove(productId: number): void {
     this.mutate(productId, this.http.delete<Cart>(`${this.url}/items/${productId}`));
   }
 
-  /** The only mutation that answers 204 instead of the cart, and it is idempotent. */
   clear(): void {
     this.http.delete<void>(this.url).subscribe({
       next: () => {
@@ -91,10 +80,6 @@ export class CartStore {
     });
   }
 
-  /**
-   * The state is never changed before the server answers, so a rejected change needs no
-   * rollback: what is on screen is still the last cart the server confirmed.
-   */
   private mutate(productId: number, request: Observable<Cart>): void {
     this.forget(productId);
     this.busy.update((busy) => new Set(busy).add(productId));
