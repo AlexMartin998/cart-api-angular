@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { CartStore } from '../../cart/cart.store';
 import { ProductsService } from '../products.service';
 
 const TYPING_PAUSE_MS = 300;
@@ -15,6 +16,8 @@ const TYPING_PAUSE_MS = 300;
 export default class ProductList {
   private readonly service = inject(ProductsService);
 
+  protected readonly cart = inject(CartStore);
+
   protected readonly products = this.service.products;
   protected readonly categories = this.service.categories;
   protected readonly page = this.service.page;
@@ -23,6 +26,7 @@ export default class ProductList {
   protected readonly search = new FormControl('', { nonNullable: true });
 
   constructor() {
+    // Without the pause this fires one request per keystroke.
     this.search.valueChanges
       .pipe(debounceTime(TYPING_PAUSE_MS), distinctUntilChanged(), takeUntilDestroyed())
       .subscribe((term) => this.service.setSearch(term.trim()));
